@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import DetailView, ListView, UpdateView
+from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
 from .models import Writer, Article
 
@@ -13,6 +13,17 @@ class DashboardView(ListView):
 class ArticleDetailView(DetailView):
     template_name = 'blogging/article_detail.html'
     model = Article
+
+
+class ArticleCreateView(CreateView):
+    template_name = 'blogging/article_detail.html'
+    template_name_suffix = ''
+    model = Article
+    fields = ('title', 'content')
+
+    def form_valid(self, form):
+        form.instance.written_by = self.request.user.writer
+        return super(ArticleCreateView, self).form_valid(form)
 
 
 class ArticleApprovalView(PermissionRequiredMixin, ListView):

@@ -85,6 +85,35 @@ class TestDashboard(TestCase):
             self.assertEqual(sum(w.total_articles_in_last_month for w in writers), 15)
 
 
+class TestArticleCreateView(TestCase):
+    def setUp(self):
+        self.writer = WriterFactory()
+        self.client = Client()
+        self.client.force_login(self.writer.user)
+
+    def test_create(self):
+        self.assertEqual(Article.objects.count(), 0)
+        r = self.client.post('/article', {'title': 'MyTitle', 'content': 'article content'})
+        self.assertEqual(Article.objects.count(), 1)
+        a = Article.objects.first()
+        self.assertEqual(a.title, 'MyTitle')
+        self.assertEqual(a.content, 'article content')
+        self.assertEqual(a.status, Article.STATUS_PENDING)
+
+    def test_cant_write_status(self):
+        self.assertEqual(Article.objects.count(), 0)
+        r = self.client.post('/article', {
+            'title': 'MyTitle',
+            'content': 'article content',
+            'status': 'approved',
+        })
+        self.assertEqual(Article.objects.count(), 1)
+        a = Article.objects.first()
+        self.assertEqual(a.title, 'MyTitle')
+        self.assertEqual(a.content, 'article content')
+        self.assertEqual(a.status, Article.STATUS_PENDING)
+
+
 class TestArticleApproval(TestCase):
     def setUp(self):
         self.editor = EditorFactory()
