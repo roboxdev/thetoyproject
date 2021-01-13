@@ -107,14 +107,34 @@ class TestArticleApproval(TestCase):
         client.force_login(writer.user)
         r = client.get('/article-approval')
         self.assertEqual(r.status_code, 403)
+        r = client.post(f'/article-approval/1', {'status': 'approved'})
+        self.assertEqual(r.status_code, 403)
 
-    def test_view(self):
+    def test_list(self):
         client = Client()
         client.force_login(self.editor.user)
         r = client.get('/article-approval')
         self.assertEqual(r.status_code, 200)
         object_list = r.context['object_list']
         self.assertEqual(len(object_list), 10)
+
+    def test_approve(self):
+        client = Client()
+        client.force_login(self.editor.user)
+        article = ArticleFactory()
+        self.assertNotEqual(article.status, Article.STATUS_APPROVED)
+        r = client.post(f'/article-approval/{article.pk}', {'status': 'approved'})
+        article.refresh_from_db()
+        self.assertEqual(article.status, Article.STATUS_APPROVED)
+
+    def test_reject(self):
+        client = Client()
+        client.force_login(self.editor.user)
+        article = ArticleFactory()
+        self.assertNotEqual(article.status, Article.STATUS_REJECTED)
+        r = client.post(f'/article-approval/{article.pk}', {'status': 'rejected'})
+        article.refresh_from_db()
+        self.assertEqual(article.status, Article.STATUS_REJECTED)
 
 
 class TestArticlesEdited(TestCase):
@@ -147,7 +167,7 @@ class TestArticlesEdited(TestCase):
         r = client.get('/articles-edited')
         self.assertEqual(r.status_code, 403)
 
-    def test_view(self):
+    def test_list(self):
         client = Client()
         client.force_login(self.editor.user)
         r = client.get('/articles-edited')

@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 
 from django.db.models import Count, Q
+from django.urls import reverse
 
 from core.utils import get_current_time
 
@@ -92,6 +93,9 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('article-detail-view', kwargs={'pk': self.pk})
 
     def approve(self, writer):
         if self.status == self.STATUS_PENDING:

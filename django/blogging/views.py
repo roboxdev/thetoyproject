@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, UpdateView
 
 from .models import Writer, Article
 
@@ -12,14 +12,20 @@ class DashboardView(ListView):
 
 class ArticleDetailView(DetailView):
     template_name = 'blogging/article_detail.html'
+    model = Article
 
 
 class ArticleApprovalView(PermissionRequiredMixin, ListView):
     permission_required = 'blogging.can_approve_articles'
     template_name = 'blogging/article_approval.html'
+    queryset = Article.objects.approval_needed()
 
-    def get_queryset(self):
-        return Article.objects.approval_needed()
+
+class ArticleApprovalPostView(PermissionRequiredMixin, UpdateView):
+    permission_required = 'blogging.can_approve_articles'
+    model = Article
+    fields = ['status']
+    template_name = 'blogging/articles_edited.html'
 
 
 class ArticlesEditedView(PermissionRequiredMixin, ListView):
