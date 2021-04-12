@@ -155,6 +155,7 @@ class TestArticleApproval(TestCase):
         r = client.post(f'/article-approval/{article.pk}', {'status': 'approved'})
         article.refresh_from_db()
         self.assertEqual(article.status, Article.STATUS_APPROVED)
+        self.assertEqual(article.edited_by, self.editor.user.writer)
 
     def test_reject(self):
         client = Client()
@@ -164,6 +165,7 @@ class TestArticleApproval(TestCase):
         r = client.post(f'/article-approval/{article.pk}', {'status': 'rejected'})
         article.refresh_from_db()
         self.assertEqual(article.status, Article.STATUS_REJECTED)
+        self.assertEqual(article.edited_by, self.editor.user.writer)
 
 
 class TestArticlesEdited(TestCase):

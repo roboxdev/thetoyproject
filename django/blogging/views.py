@@ -40,6 +40,10 @@ class ArticleApprovalPostView(PermissionRequiredMixin, UpdateView):
     fields = ['status']
     template_name = 'blogging/articles_edited.html'
 
+    def form_valid(self, form):
+        form.instance.edited_by = self.request.user.writer
+        return super(ArticleApprovalPostView, self).form_valid(form)
+
     def get_success_url(self):
         # To stay on the same page
         return self.request.META.get('HTTP_REFERER', '/')
