@@ -1,1 +1,21 @@
 {% extends 'core/base.html' %}
+
+{% block body_main %}
+  <main class="w-full">
+    <table class="w-full text-left">
+      <tr>
+        <th class="w-1/4">Title</th>
+        <th class="w-1/4">Content</th>
+        <th class="w-1/4">Status</th>
+      </tr>
+      {% for article in object_list %}
+        <tr>
+          <td>{{ article.title }}</td>
+          <td>{{ article.content }}</td>
+          <td>{{ article.status|title }}</td>
+
+        </tr>
+      {% endfor %}
+    </table>
+  </main>
+{% endblock body_main %}

@@ -4,12 +4,14 @@
   <main class="w-full">
     <table class="w-full text-left">
       <tr>
+        <th class="w-1/4">Author</th>
         <th class="w-1/4">Title</th>
         <th class="w-1/4">Content</th>
         <th class="w-1/4">Action</th>
       </tr>
       {% for article in object_list %}
         <tr>
+          <td>{{ article.written_by.name }}</td>
           <td>{{ article.title }}</td>
           <td>{{ article.content }}</td>
           <td class="flex">
