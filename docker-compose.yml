@@ -2,13 +2,10 @@ version: "3"
 
 services:
   web:
-#    container_name: web
+    container_name: web
     build: ./django
-    volumes:
-      - ./django:/project
     environment:
       DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY}"
-      DJANGO_SETTINGS_MODULE: "toy_django_app.dev_settings" # todo
       POSTGRES_DB: "${POSTGRES_DB}"
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
@@ -19,21 +16,17 @@ services:
       - redis
 
   db:
-#    container_name: db
+    container_name: db
     restart: always
     image: postgres:13.1
     environment:
       POSTGRES_DB: "${POSTGRES_DB}"
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-    ports:
-      - "127.0.0.1:5432:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
 
   redis:
-#    container_name: redis
+    container_name: redis
     restart: always
     image: redis
-    ports:
-      - "127.0.0.1:6379:6379"

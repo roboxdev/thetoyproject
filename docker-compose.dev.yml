@@ -1,0 +1,17 @@
+services:
+  web:
+    environment:
+      DJANGO_SETTINGS_MODULE: "toy_django_app.dev_settings"
+    volumes:
+      - ./django:/app
+    ports:
+      - "8019:8019"
+
+  db:
+    ports:
+      - "5432:5432"
+
+  redis:
+    container_name: redis
+    ports:
+      - "6379:6379"
