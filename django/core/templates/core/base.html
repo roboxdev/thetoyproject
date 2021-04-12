@@ -11,11 +11,47 @@
   {% endblock extra_head %}
 </head>
 
-<body>
-  <header>The toy project</header>
-  {% block body_main %}
-    test
-  {% endblock body_main %}
+<body class="flex flex-col min-h-screen">
+  <header class="p-4 flex justify-between items-center bg-red-100">
+    <h1 class="text-xl">The toy project</h1>
+    <form
+        method="post"
+        action="{% if user.is_anonymous %}{% url 'login' %}{% else %}{% url 'logout' %}{% endif %}"
+        class="flex flex-col items-end"
+    >
+      {% csrf_token %}
+      {% if user.is_anonymous %}
+        <label>
+          Login
+          <input name="username" type="text" class="" placeholder="John">
+        </label>
+        <label>
+          Password
+          <input name="password" type="text" class="" placeholder="bananapie">
+        </label>
+        <button type="submit" class="bg-gray-100 rounded w-full">Log in</button>
+      {% else %}
+        <p>Hello, {{ user.username }}</p>
+        <button type="submit" class="bg-gray-100 rounded w-full">Log out</button>
+      {% endif %}
+    </form>
+  </header>
+  <div class="flex flex-row flex-1">
+    <nav class="p-4 border-r-2">
+      <h2 class="pb-6">Navigation</h2>
+      <ul class="flex flex-col">
+        <li class="text-blue-900 pb-4"><a href="{% url 'dashboard-view' %}">dashboard-view</a></li>
+        <li class="text-blue-900 pb-4"><a href="{% url 'article-create-view' %}">article-detail-view</a></li>
+        <li class="text-blue-900 pb-4"><a href="{% url 'article-approval-view' %}">article-approval-view</a></li>
+        <li class="text-blue-900 pb-4"><a href="{% url 'articles-edited-view' %}">articles-edited-view</a></li>
+      </ul>
+    </nav>
+    <div class="p-4">
+      {% block body_main %}
+        test
+      {% endblock body_main %}
+    </div>
+  </div>
 
 </body>
 </html>
