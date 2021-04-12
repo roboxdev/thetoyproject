@@ -1,1 +1,39 @@
 {% extends 'core/base.html' %}
+
+{% block body_main %}
+  <main class="w-full">
+    <table class="w-full text-left">
+      <tr>
+        <th class="w-1/4">Title</th>
+        <th class="w-1/4">Content</th>
+        <th class="w-1/4">Action</th>
+      </tr>
+      {% for article in object_list %}
+        <tr>
+          <td>{{ article.title }}</td>
+          <td>{{ article.content }}</td>
+          <td class="flex">
+            <form
+                method="POST"
+                action="{% url 'article-approval-post-view' article.pk %}"
+                class="p-2 bg-green-300 rounded mr-2"
+            >
+              {% csrf_token %}
+              <input type="hidden" name="status" value="approved"/>
+              <button type="submit">Accept</button>
+            </form>
+            <form
+                method="POST"
+                action="{% url 'article-approval-post-view' article.pk %}"
+                class="p-2 bg-red-300 rounded"
+            >
+              {% csrf_token %}
+              <input type="hidden" name="status" value="rejected"/>
+              <button type="submit">Decline</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </main>
+{% endblock body_main %}

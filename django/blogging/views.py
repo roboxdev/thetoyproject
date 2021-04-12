@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
 from .models import Writer, Article
@@ -33,10 +34,15 @@ class ArticleApprovalView(PermissionRequiredMixin, ListView):
 
 
 class ArticleApprovalPostView(PermissionRequiredMixin, UpdateView):
+
     permission_required = 'blogging.can_approve_articles'
     model = Article
     fields = ['status']
     template_name = 'blogging/articles_edited.html'
+
+    def get_success_url(self):
+        # To stay on the same page
+        return self.request.META.get('HTTP_REFERER', '/')
 
 
 class ArticlesEditedView(PermissionRequiredMixin, ListView):
