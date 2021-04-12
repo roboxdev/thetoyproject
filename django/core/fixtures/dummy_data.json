@@ -1,0 +1,156 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "Editors",
+      "permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$w9C674j8ab8Q$F3sBVApJSl/wZABudfdiNHgPW555kPXylI/DukoUlKs=",
+      "last_login": "2021-04-12T13:48:18.872Z",
+      "is_superuser": true,
+      "username": "root",
+      "first_name": "",
+      "last_name": "",
+      "email": "root@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2021-01-11T01:21:22.292Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$w9C674j8ab8Q$F3sBVApJSl/wZABudfdiNHgPW555kPXylI/DukoUlKs=",
+      "last_login": "2021-04-12T15:03:12.287Z",
+      "is_superuser": false,
+      "username": "editor",
+      "first_name": "",
+      "last_name": "",
+      "email": "editor@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-01-11T01:53:34Z",
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$w9C674j8ab8Q$F3sBVApJSl/wZABudfdiNHgPW555kPXylI/DukoUlKs=",
+      "last_login": "2021-04-12T14:50:20.072Z",
+      "is_superuser": false,
+      "username": "writer",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2021-01-11T01:54:18.870Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "blogging.writer",
+    "pk": 1,
+    "fields": {
+      "is_editor": false,
+      "name": "Foo Writer",
+      "user": 3
+    }
+  },
+  {
+    "model": "blogging.writer",
+    "pk": 2,
+    "fields": {
+      "is_editor": true,
+      "name": "Foo Editor",
+      "user": 2
+    }
+  },
+  {
+    "model": "blogging.article",
+    "pk": 1,
+    "fields": {
+      "created_at": "2021-03-27T01:22:15.609Z",
+      "title": "Article 1",
+      "content": "a1",
+      "status": "approved",
+      "written_by": 1,
+      "edited_by": 2
+    }
+  },
+  {
+    "model": "blogging.article",
+    "pk": 2,
+    "fields": {
+      "created_at": "2021-03-11T01:22:25.005Z",
+      "title": "Article 2",
+      "content": "a2",
+      "status": "approved",
+      "written_by": 1,
+      "edited_by": null
+    }
+  },
+  {
+    "model": "blogging.article",
+    "pk": 3,
+    "fields": {
+      "created_at": "2020-12-11T01:22:34.393Z",
+      "title": "Article 3",
+      "content": "a3",
+      "status": "rejected",
+      "written_by": 1,
+      "edited_by": 2
+    }
+  },
+  {
+    "model": "blogging.article",
+    "pk": 5,
+    "fields": {
+      "created_at": "2021-04-12T14:37:44.930Z",
+      "title": "qwer",
+      "content": "1234",
+      "status": "pending",
+      "written_by": 2,
+      "edited_by": null
+    }
+  },
+  {
+    "model": "blogging.article",
+    "pk": 6,
+    "fields": {
+      "created_at": "2021-04-12T14:43:52.488Z",
+      "title": "My newest article",
+      "content": "lalalal\r\n\r\nda",
+      "status": "pending",
+      "written_by": 1,
+      "edited_by": null
+    }
+  },
+  {
+    "model": "blogging.article",
+    "pk": 7,
+    "fields": {
+      "created_at": "2021-04-12T14:50:54.237Z",
+      "title": "The best article ever",
+      "content": "Cats are beautiful!",
+      "status": "approved",
+      "written_by": 1,
+      "edited_by": 2
+    }
+  }
+]
