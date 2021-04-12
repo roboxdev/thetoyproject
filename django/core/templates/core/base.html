@@ -41,7 +41,11 @@
       <h2 class="pb-6">Navigation</h2>
       <ul class="flex flex-col">
         <li class="text-blue-900 pb-4"><a href="{% url 'dashboard-view' %}">Dashboard</a></li>
-        <li class="text-blue-900 pb-4"><a href="{% url 'article-create-view' %}">Create article</a></li>
+        {% if not user.is_anonymous %}
+          <li class="text-blue-900 pb-4">
+            <a href="{% url 'article-create-view' %}">Create article</a>
+          </li>
+        {% endif %}
         {% if perms.blogging.can_approve_articles %}
           <li class="text-blue-900 pb-4">
             <a href="{% url 'article-approval-view' %}">Article approval</a>
