@@ -17,25 +17,60 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Writer',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID',
+                )),
                 ('is_editor', models.BooleanField(default=False)),
                 ('name', models.CharField(max_length=255)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='writer', to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    related_name='writer',
+                    to=settings.AUTH_USER_MODEL,
+                )),
             ],
             options={
-                'permissions': [('can_approve_articles', 'Can change the status of articles')],
+                'permissions': [(
+                    'can_approve_articles',
+                    'Can change the status of articles',
+                )],
             },
         ),
         migrations.CreateModel(
             name='Article',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID',
+                )),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('title', models.CharField(max_length=255)),
                 ('content', models.TextField()),
-                ('status', models.CharField(choices=[('pending', 'pending'), ('approved', 'approved'), ('rejected', 'rejected')], default='pending', max_length=50)),
-                ('edited_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='edited_articles', to='blogging.writer')),
-                ('written_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='articles', to='blogging.writer')),
+                ('status', models.CharField(
+                    choices=[
+                        ('pending', 'pending'),
+                        ('approved', 'approved'),
+                        ('rejected', 'rejected')
+                    ],
+                    default='pending',
+                    max_length=50,
+                )),
+                ('edited_by', models.ForeignKey(
+                    blank=True,
+                    null=True,
+                    on_delete=django.db.models.deletion.CASCADE,
+                    related_name='edited_articles',
+                    to='blogging.writer',
+                )),
+                ('written_by', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    related_name='articles',
+                    to='blogging.writer',
+                )),
             ],
         ),
     ]

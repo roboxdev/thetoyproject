@@ -5,7 +5,12 @@ import factory
 import pytz
 from django.test import TestCase, Client
 
-from .factories import ArticleFactory, WriterFactory, ApprovedArticleFactory, EditorFactory
+from .factories import (
+    ArticleFactory,
+    WriterFactory,
+    ApprovedArticleFactory,
+    EditorFactory,
+)
 from .models import Article, Writer
 
 
@@ -15,7 +20,8 @@ class TestDashboard(TestCase):
         writer_2 = WriterFactory()
         writer_3 = WriterFactory()
 
-        with mock.patch('core.utils.timezone.now', return_value=datetime(2020, 3, 1, tzinfo=pytz.UTC)):
+        with mock.patch('core.utils.timezone.now',
+                        return_value=datetime(2020, 3, 1, tzinfo=pytz.UTC)):
             factory.create_batch(
                 Article,
                 1,
@@ -35,7 +41,8 @@ class TestDashboard(TestCase):
                 written_by=writer_3,
             )
 
-        with mock.patch('core.utils.timezone.now', return_value=datetime(2020, 3, 1, tzinfo=pytz.UTC)):
+        with mock.patch('core.utils.timezone.now',
+                        return_value=datetime(2020, 3, 1, tzinfo=pytz.UTC)):
             factory.create_batch(
                 Article,
                 4,
@@ -55,7 +62,8 @@ class TestDashboard(TestCase):
                 written_by=writer_3,
             )
 
-        with mock.patch('core.utils.timezone.now', return_value=datetime(2020, 1, 1, tzinfo=pytz.UTC)):
+        with mock.patch('core.utils.timezone.now',
+                        return_value=datetime(2020, 1, 1, tzinfo=pytz.UTC)):
             factory.create_batch(
                 Article,
                 7,
@@ -82,7 +90,10 @@ class TestDashboard(TestCase):
                 self.assertNumQueries(1):
             writers = Writer.objects.with_articles_count()
             self.assertEqual(sum(w.total_articles for w in writers), 39)
-            self.assertEqual(sum(w.total_articles_in_last_month for w in writers), 15)
+            self.assertEqual(
+                sum(w.total_articles_in_last_month for w in writers),
+                15,
+            )
 
 
 class TestArticleCreateView(TestCase):
@@ -93,7 +104,10 @@ class TestArticleCreateView(TestCase):
 
     def test_create(self):
         self.assertEqual(Article.objects.count(), 0)
-        r = self.client.post('/article', {'title': 'MyTitle', 'content': 'article content'})
+        self.client.post(
+            '/article',
+            {'title': 'MyTitle', 'content': 'article content'},
+        )
         self.assertEqual(Article.objects.count(), 1)
         a = Article.objects.first()
         self.assertEqual(a.title, 'MyTitle')
@@ -102,7 +116,7 @@ class TestArticleCreateView(TestCase):
 
     def test_cant_write_status(self):
         self.assertEqual(Article.objects.count(), 0)
-        r = self.client.post('/article', {
+        self.client.post('/article', {
             'title': 'MyTitle',
             'content': 'article content',
             'status': 'approved',
@@ -136,7 +150,7 @@ class TestArticleApproval(TestCase):
         client.force_login(writer.user)
         r = client.get('/article-approval')
         self.assertEqual(r.status_code, 403)
-        r = client.post(f'/article-approval/1', {'status': 'approved'})
+        r = client.post('/article-approval/1', {'status': 'approved'})
         self.assertEqual(r.status_code, 403)
 
     def test_list(self):
@@ -152,7 +166,10 @@ class TestArticleApproval(TestCase):
         client.force_login(self.editor.user)
         article = ArticleFactory()
         self.assertNotEqual(article.status, Article.STATUS_APPROVED)
-        r = client.post(f'/article-approval/{article.pk}', {'status': 'approved'})
+        client.post(
+            f'/article-approval/{article.pk}',
+            {'status': 'approved'},
+        )
         article.refresh_from_db()
         self.assertEqual(article.status, Article.STATUS_APPROVED)
         self.assertEqual(article.edited_by, self.editor.user.writer)
@@ -162,7 +179,10 @@ class TestArticleApproval(TestCase):
         client.force_login(self.editor.user)
         article = ArticleFactory()
         self.assertNotEqual(article.status, Article.STATUS_REJECTED)
-        r = client.post(f'/article-approval/{article.pk}', {'status': 'rejected'})
+        client.post(
+            f'/article-approval/{article.pk}',
+            {'status': 'rejected'},
+        )
         article.refresh_from_db()
         self.assertEqual(article.status, Article.STATUS_REJECTED)
         self.assertEqual(article.edited_by, self.editor.user.writer)

@@ -22,7 +22,9 @@ class WriterManager(models.Manager):
                 'articles',
                 filter=Q(
                     articles__status=Article.STATUS_APPROVED,
-                    articles__created_at__gte=get_current_time() - timedelta(days=30),
+                    articles__created_at__gte=(
+                        get_current_time() - timedelta(days=30)
+                    ),
                 )
             ),
         )
@@ -51,7 +53,8 @@ class ArticleManager(models.Manager):
     def edited_by_user(self, user):
         return self.filter(
             Q(edited_by__user=user),
-            Q(status=Article.STATUS_APPROVED) | Q(status=Article.STATUS_REJECTED)
+            Q(status=Article.STATUS_APPROVED)
+            | Q(status=Article.STATUS_REJECTED)
         )
 
     def approval_needed(self):

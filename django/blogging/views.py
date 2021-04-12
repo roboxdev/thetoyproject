@@ -1,5 +1,4 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 
 from .models import Writer, Article
