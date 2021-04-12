@@ -27,7 +27,7 @@
         </label>
         <label>
           Password
-          <input name="password" type="text" class="" placeholder="bananapie">
+          <input name="password" type="password" class="" placeholder="bananapie">
         </label>
         <button type="submit" class="bg-gray-100 rounded w-full">Log in</button>
       {% else %}
@@ -40,10 +40,18 @@
     <nav class="p-4 border-r-2">
       <h2 class="pb-6">Navigation</h2>
       <ul class="flex flex-col">
-        <li class="text-blue-900 pb-4"><a href="{% url 'dashboard-view' %}">dashboard-view</a></li>
-        <li class="text-blue-900 pb-4"><a href="{% url 'article-create-view' %}">article-detail-view</a></li>
-        <li class="text-blue-900 pb-4"><a href="{% url 'article-approval-view' %}">article-approval-view</a></li>
-        <li class="text-blue-900 pb-4"><a href="{% url 'articles-edited-view' %}">articles-edited-view</a></li>
+        <li class="text-blue-900 pb-4"><a href="{% url 'dashboard-view' %}">Dashboard</a></li>
+        <li class="text-blue-900 pb-4"><a href="{% url 'article-create-view' %}">Create article</a></li>
+        {% if perms.blogging.can_approve_articles %}
+          <li class="text-blue-900 pb-4">
+            <a href="{% url 'article-approval-view' %}">Article approval</a>
+          </li>
+        {% endif %}
+        {% if perms.blogging.can_approve_articles %}
+          <li class="text-blue-900 pb-4">
+            <a href="{% url 'articles-edited-view' %}">Articles edited</a>
+          </li>
+        {% endif %}
       </ul>
     </nav>
     <div class="p-4">
